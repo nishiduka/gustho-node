@@ -13,6 +13,7 @@ class Server {
   private initRoutes() {
     this.app.use('/api/products', routes.ProductsRoutes());
     this.app.use('/api/suppliers', routes.SuppliersRoutes());
+    this.app.use('/api/clients', routes.ClientsRoutes());
 
     console.log(`\n        🗺  Conexao do banco de dados estabilizada\n`);
   }

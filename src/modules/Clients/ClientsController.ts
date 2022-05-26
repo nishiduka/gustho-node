@@ -1,20 +1,20 @@
 import IController from '../IController';
-import {{pascalCase name}}DTO from './{{pascalCase name}}DTO';
-import * as {{lowerCase name}}Service from './{{pascalCase name}}Service';
+import ClientsDTO from './ClientsDTO';
+import * as clientsService from './ClientsService';
 
-export default class {{pascalCase name}}Controller extends IController {
+export default class ClientsController extends IController {
   async getAll() {
-    const {{lowerCase name}} = await {{pascalCase name}}DTO.findAll();
+    const clients = await ClientsDTO.findAll();
 
     return this.response({
-      {{lowerCase name}},
+      clients,
     });
   }
 
   async create() {
     try {
       const body = this._request.body;
-      const product = await {{lowerCase name}}Service.create{{pascalCase name}}(body);
+      const product = await clientsService.createClients(body);
 
       return this.response(product);
     } catch (error: any) {
@@ -25,7 +25,7 @@ export default class {{pascalCase name}}Controller extends IController {
   async get() {
     try {
       const params = this._request.params;
-      const product = await {{lowerCase name}}Service.findOne(params.id);
+      const product = await clientsService.findOne(params.id);
 
       return this.response(product);
     } catch (error: any) {
@@ -38,7 +38,7 @@ export default class {{pascalCase name}}Controller extends IController {
       const params = this._request.params;
       const body = this._request.body;
 
-      const product = await {{lowerCase name}}Service.update{{pascalCase name}}(params.id, body);
+      const product = await clientsService.updateClients(params.id, body);
 
       return this.response(product);
     } catch (error: any) {
@@ -50,7 +50,7 @@ export default class {{pascalCase name}}Controller extends IController {
     try {
       const params = this._request.params;
 
-      await {{lowerCase name}}Service.remove{{pascalCase name}}(params.id);
+      await clientsService.removeClients(params.id);
 
       return this.response('', 204);
     } catch (error: any) {

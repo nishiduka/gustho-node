@@ -35,6 +35,11 @@ module.exports = function (plop) {
         path: '../src/modules/{{pascalCase name}}/T{{pascalCase name}}.ts',
         templateFile: 'templates/type.ts.hbs',
       },
+      {
+        type: 'add',
+        path: '../src/modules/{{pascalCase name}}/{{pascalCase name}}Service.ts',
+        templateFile: 'templates/service.ts.hbs',
+      },
     ],
   });
 };

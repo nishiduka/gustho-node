@@ -1,0 +1,53 @@
+import {{pascalCase name}}DTO from './{{pascalCase name}}DTO';
+import { createSchema } from './schema';
+import { I{{pascalCase name}}Creation } from './T{{pascalCase name}}';
+import { NotFoundError } from '../../utils/NotFoundError';
+import { ValidationError } from '../../utils/ValidationError';
+
+export const findOne = async (id: string): Promise<{{pascalCase name}}DTO> => {
+  const {{lowerCase name}} = await {{pascalCase name}}DTO.findByPk(parseInt(id));
+
+  if (!{{lowerCase name}}) {
+    throw new NotFoundError('{{pascalCase name}} not found');
+  }
+
+  return {{lowerCase name}};
+};
+
+export const create{{pascalCase name}} = async (body: I{{pascalCase name}}Creation) => {
+  const validation = createSchema.validate(body);
+
+  if (validation.error) {
+    throw new ValidationError(validation.error);
+  }
+
+  const {{lowerCase name}} = await {{pascalCase name}}DTO.create({});
+
+  return {{lowerCase name}};
+};
+
+export const update{{pascalCase name}} = async (id: string, body: I{{pascalCase name}}Creation) => {
+  try {
+    const validation = createSchema.validate(body);
+
+    if (validation.error) {
+      throw validation.error;
+    }
+
+    const {{lowerCase name}} = await findOne(id);
+
+    return {{lowerCase name}}.save();
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const remove{{pascalCase name}} = async (id: string) => {
+  try {
+    const {{lowerCase name}} = await findOne(id);
+
+    return {{lowerCase name}}.destroy();
+  } catch (error) {
+    throw error;
+  }
+};
