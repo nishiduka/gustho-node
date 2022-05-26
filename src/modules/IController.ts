@@ -1,7 +1,5 @@
 import { Request, Response } from 'express';
-import { Model } from 'sequelize/types';
-import { RequestError } from 'utils/RequestError';
-import { ValidationError } from 'utils/ValidationError';
+import { RequestError } from '../utils/RequestError';
 
 export default class IController {
   _request: Request;

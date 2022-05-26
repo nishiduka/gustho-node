@@ -1,53 +1,44 @@
-import { DataTypes, Model, Optional } from 'sequelize';
-import { sequelize } from '../../lib/sequelize';
-import { IProducts } from './TProduct';
+import { DataTypes } from 'sequelize';
+import { Table, Model, Column } from 'sequelize-typescript';
 
-type IProductsCreation = Optional<IProducts, 'id'>;
+@Table({
+  tableName: 'product',
+  timestamps: true,
+})
+class ProductDTO extends Model {
+  @Column({
+    type: DataTypes.STRING,
+    allowNull: false,
+  })
+  name!: string;
 
-class ProductDTO extends Model<IProducts, IProductsCreation> {
-  declare id: number;
-  declare name: string;
-  declare description: string;
-  declare shortDescription: string | null;
-  declare metric: string;
-  declare price: number;
-  declare quantity: number;
+  @Column({
+    type: DataTypes.STRING,
+  })
+  description!: string;
+
+  @Column({
+    type: DataTypes.STRING,
+  })
+  shortDescription!: string | null;
+
+  @Column({
+    type: DataTypes.STRING,
+    allowNull: false,
+  })
+  metric!: string;
+
+  @Column({
+    type: DataTypes.FLOAT,
+    allowNull: false,
+  })
+  price!: number;
+
+  @Column({
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  })
+  quantity!: number;
 }
-
-ProductDTO.init(
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    description: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    shortDescription: {
-      type: DataTypes.STRING,
-    },
-    quantity: {
-      type: DataTypes.INTEGER,
-    },
-    price: {
-      type: DataTypes.FLOAT,
-    },
-    metric: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-  },
-  {
-    sequelize,
-    tableName: 'product',
-    timestamps: true,
-  }
-);
 
 export default ProductDTO;

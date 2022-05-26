@@ -1,52 +1,40 @@
-import { DataTypes, Model, Optional } from 'sequelize';
-import { sequelize } from '../../lib/sequelize';
-import { IClients } from './TClients';
+import { DataTypes } from 'sequelize';
+import { Column, Model, Table } from 'sequelize-typescript';
 
-type IClientsCreation = Optional<IClients, 'id'>;
+@Table({
+  tableName: 'clients',
+  timestamps: true,
+})
+class ClientsDTO extends Model {
+  @Column({
+    type: DataTypes.STRING,
+    allowNull: false,
+  })
+  name!: string;
 
-class ClientsDTO extends Model<IClients, IClientsCreation> {
-  declare id: number;
+  @Column({
+    type: DataTypes.STRING,
+    allowNull: false,
+  })
+  cpf!: string;
 
-  declare name: string;
-  declare cpf: string;
-  declare birthdate: Date;
-  declare mail: string;
-  declare phone: string;
+  @Column({
+    type: DataTypes.DATE,
+    allowNull: false,
+  })
+  birthdate!: Date;
+
+  @Column({
+    type: DataTypes.STRING,
+    allowNull: false,
+  })
+  mail!: string;
+
+  @Column({
+    type: DataTypes.STRING,
+    allowNull: false,
+  })
+  phone!: string;
 }
-
-ClientsDTO.init(
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    cpf: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    birthdate: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
-    mail: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    phone: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-  },
-  {
-    sequelize,
-    tableName: 'clients',
-    timestamps: true,
-  }
-);
 
 export default ClientsDTO;

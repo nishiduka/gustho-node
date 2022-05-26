@@ -1,10 +1,13 @@
 import IController from '../IController';
+import SupplierContactDTO from './SupplierContactDTO';
 import SupplierDTO from './SupplierDTO';
 import * as supplierService from './SupplierService';
 
 export default class SupplierController extends IController {
   async getAll() {
-    const suppliers = await SupplierDTO.findAll();
+    const suppliers = await SupplierDTO.findAll({
+      include: SupplierContactDTO,
+    });
 
     return this.response({
       suppliers,

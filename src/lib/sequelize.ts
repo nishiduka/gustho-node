@@ -1,4 +1,5 @@
-import { Sequelize } from 'sequelize';
+import { Sequelize } from 'sequelize-typescript';
+import { listModel } from '../modules/models';
 
 const url = process.env.DB_URL || '';
 const db = process.env.DB_NAME || '';
@@ -14,14 +15,22 @@ export const sequelize = new Sequelize(db, username, password, {
   logging,
 });
 
+const loadModels = async () => {
+  await sequelize.addModels(listModel);
+  console.log(`\n        📝 Tabelas adicionadas\n`);
+};
+
 const updateTables = async () => {
   await sequelize.sync({ alter: true });
   console.log(`\n        📝 Tabelas atualizadas\n`);
 };
+
 export const initSequlize = async () => {
   try {
     await sequelize.authenticate();
     console.log(`\n        💾 Conexao do banco de dados estabilizada\n`);
+
+    await loadModels();
 
     await updateTables();
   } catch (error) {
