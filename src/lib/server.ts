@@ -1,0 +1,41 @@
+import express from 'express';
+import { loggerMiddleware } from './middleware';
+import { initSequlize } from './sequelize';
+import * as routes from '../modules/routes';
+
+class Server {
+  app: any;
+
+  private boot() {
+    this.app = express();
+  }
+
+  private initRoutes() {
+    this.app.use('/api/products', routes.ProductsRoutes());
+    this.app.use('/api/suppliers', routes.SuppliersRoutes());
+
+    console.log(`\n        🗺  Conexao do banco de dados estabilizada\n`);
+  }
+
+  private async initModules() {
+    await initSequlize();
+
+    this.app.use(loggerMiddleware);
+    this.app.use(express.json());
+
+    this.initRoutes();
+  }
+
+  public start() {
+    this.boot();
+    this.initModules();
+
+    this.app.listen(process.env.NODE_PORT);
+
+    console.log(
+      `\n        🚀 Server ready at: http://localhost:${process.env.NODE_PORT}\n`
+    );
+  }
+}
+
+export default Server;

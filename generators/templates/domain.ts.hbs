@@ -1,0 +1,27 @@
+import { DataTypes, Model, Optional } from 'sequelize';
+import { sequelize } from '../../lib/sequelize';
+import { I{{pascalCase name}} } from './T{{pascalCase name}}';
+
+type I{{pascalCase name}}Creation = Optional<I{{pascalCase name}}, 'id'>;
+
+
+class {{pascalCase name}}DTO extends Model<I{{pascalCase name}}, I{{pascalCase name}}Creation> {
+  declare id: number;
+}
+
+{{pascalCase name}}DTO.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+  },
+  {
+    sequelize,
+    tableName: '{{lowerCase name}}',
+    timestamps: true,
+  }
+);
+
+export default {{pascalCase name}}DTO;
