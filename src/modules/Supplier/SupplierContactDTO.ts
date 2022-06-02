@@ -39,7 +39,7 @@ class SupplierContactDTO extends Model<
   supplier!: SupplierDTO;
 
   @ForeignKey(() => SupplierDTO)
-  @Column({ onDelete: 'cascade', type: DataTypes.NUMBER })
+  @Column({ onDelete: 'cascade', type: DataTypes.INTEGER })
   supplierId!: number;
 }
 
