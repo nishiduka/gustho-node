@@ -1,4 +1,3 @@
-import IController from 'modules/IController';
 import 'reflect-metadata';
 import { RequestError } from '../../utils/RequestError';
 

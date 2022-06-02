@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { IRequest } from 'types';
+import { IRequest } from '../types';
 import { RequestError } from '../utils/RequestError';
 
 export default class IController {

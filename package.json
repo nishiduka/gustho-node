@@ -28,6 +28,8 @@
   },
   "scripts": {
     "dev": "nodemon --watch 'src/' --exec 'env-cmd -f .env ts-node src/app.ts' -e ts",
+    "build": "rm -rf build && tsc",
+    "start:prod": "env-cmd -f .env node build/app.js",
     "generate": "yarn plop --plopfile ./generators/plopfile.js"
   }
 }

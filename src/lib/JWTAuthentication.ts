@@ -1,11 +1,11 @@
 import { NextFunction, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import { findByAuth } from '../modules/Auth/AuthService';
-import { IAuthRequest } from 'modules/Auth/TAuth';
-import { IRequest } from 'types';
+import { IAuthRequest } from '../modules/Auth/TAuth';
+import { IRequest } from '../types';
 import { RequestError } from '../utils/RequestError';
-import { IUsers } from 'modules/Users/TUsers';
-import UsersDTO from 'modules/Users/UsersDTO';
+import { IUsers } from '../modules/Users/TUsers';
+import UsersDTO from '../modules/Users/UsersDTO';
 
 export default class JWTAuthentication {
   verifyJWT = async (req: IRequest) => {
