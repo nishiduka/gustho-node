@@ -1,8 +1,9 @@
 import { Request, Response } from 'express';
+import { IRequest } from 'types';
 import { RequestError } from '../utils/RequestError';
 
 export default class IController {
-  _request: Request;
+  _request: IRequest;
   _response: Response;
 
   constructor(request: Request, response: Response) {

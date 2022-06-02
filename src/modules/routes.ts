@@ -1,5 +1,5 @@
-import SuppliersRoutes from './Supplier/SupplierRoutes';
-import ProductsRoutes from './Products/ProductsRoutes';
-import ClientsRoutes from './Clients/ClientsRoutes';
-
-export { SuppliersRoutes, ProductsRoutes, ClientsRoutes };
+export { default as SuppliersRoutes } from './Supplier/SupplierRoutes';
+export { default as ProductsRoutes } from './Products/ProductsRoutes';
+export { default as ClientsRoutes } from './Clients/ClientsRoutes';
+export { default as AuthRoutes } from './Auth/AuthRoutes';
+export { default as UsersRoutes } from './Users/UsersRoutes';

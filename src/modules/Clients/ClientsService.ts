@@ -1,9 +1,10 @@
 import ClientsDTO from './ClientsDTO';
 import { createSchema, updateSchema } from './schema';
-import { IClientsCreation } from './TClients';
+import { IClientsCreation, IClientsRequest } from './TClients';
 import { NotFoundError } from '../../utils/NotFoundError';
 import { ValidationError } from '../../utils/ValidationError';
 import { RequestError } from '../../utils/RequestError';
+import { createUsers } from '../../modules/Users/UsersService';
 
 export const validateMailInUse = async (mail: string): Promise<boolean> => {
   const clients = await ClientsDTO.findOne({
@@ -29,7 +30,7 @@ export const findOne = async (id: string): Promise<ClientsDTO> => {
   return clients;
 };
 
-export const createClients = async (body: IClientsCreation) => {
+export const createClients = async (body: IClientsRequest) => {
   const validation = createSchema.validate(body);
 
   if (validation.error) {
@@ -42,6 +43,13 @@ export const createClients = async (body: IClientsCreation) => {
     birthdate: body.birthdate,
     mail: body.mail,
     phone: body.phone,
+  });
+
+  const user = await createUsers({
+    name: body.name,
+    mail: body.mail,
+    password: body.password,
+    roleId: 2,
   });
 
   return clients;

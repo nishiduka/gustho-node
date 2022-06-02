@@ -1,21 +1,20 @@
 import IController from '../IController';
-import ClientsDTO from './ClientsDTO';
-import * as clientsService from './ClientsService';
+import UsersDTO from './UsersDTO';
+import * as usersService from './UsersService';
 
-export default class ClientsController extends IController {
+export default class UsersController extends IController {
   async getAll() {
-    const clients = await ClientsDTO.findAll();
+    const users = await UsersDTO.findAll();
 
     return this.response({
-      clients,
+      users,
     });
   }
 
   async create() {
     try {
       const body = this._request.body;
-
-      const product = await clientsService.createClients(body);
+      const product = await usersService.createUsers(body);
 
       return this.response(product);
     } catch (error: any) {
@@ -25,8 +24,8 @@ export default class ClientsController extends IController {
 
   async get() {
     try {
-      const params = this._request.params;
-      const product = await clientsService.findOne(params.id);
+      const userId = this._request.currentUser!.id as number;
+      const product = await usersService.findOne(userId.toString());
 
       return this.response(product);
     } catch (error: any) {
@@ -39,7 +38,7 @@ export default class ClientsController extends IController {
       const params = this._request.params;
       const body = this._request.body;
 
-      const product = await clientsService.updateClients(params.id, body);
+      const product = await usersService.updateUsers(params.id, body);
 
       return this.response(product);
     } catch (error: any) {
@@ -51,7 +50,7 @@ export default class ClientsController extends IController {
     try {
       const params = this._request.params;
 
-      await clientsService.removeClients(params.id);
+      await usersService.removeUsers(params.id);
 
       return this.response('', 204);
     } catch (error: any) {

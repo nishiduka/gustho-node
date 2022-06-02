@@ -17,6 +17,7 @@ export const createSchema = Joi.object({
     }),
   birthdate: Joi.date().required(),
   mail: Joi.string().required(),
+  password: Joi.string().required(),
   phone: Joi.string()
     .required()
     .custom((value, helper) => {
