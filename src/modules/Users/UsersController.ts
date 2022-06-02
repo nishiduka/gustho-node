@@ -1,3 +1,4 @@
+import { Auth } from '../../modules/Auth/Decorators';
 import IController from '../IController';
 import UsersDTO from './UsersDTO';
 import * as usersService from './UsersService';
@@ -22,6 +23,7 @@ export default class UsersController extends IController {
     }
   }
 
+  @Auth('all')
   async get() {
     try {
       const userId = this._request.currentUser!.id as number;

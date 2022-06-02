@@ -25,6 +25,10 @@ class UsersDTO extends Model {
   })
   password!: string;
 
+  @Column({
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  })
   @ForeignKey(() => UsersRolesDTO)
   roleId!: number;
 }

@@ -4,11 +4,9 @@ import UsersController from './UsersController';
 
 const UserssRoutes = () => {
   const router = express.Router();
-  const jwtAuthentication = new JWTAuthentication();
 
   router.get(
     '/',
-    jwtAuthentication.verifyJWT,
     (request: express.Request<{ id: string }>, response: express.Response) => {
       const usersController = new UsersController(request, response);
       return usersController.get();
