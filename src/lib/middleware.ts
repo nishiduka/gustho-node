@@ -5,6 +5,8 @@ export function loggerMiddleware(
   response: Response,
   next: NextFunction
 ) {
-  console.log(`${request.method} ${request.path}`);
+  console.log(
+    `${request.method} ${request.path} as ${new Date().toISOString()}`
+  );
   next();
 }
