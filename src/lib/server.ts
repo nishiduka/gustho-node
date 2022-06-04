@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import { loggerMiddleware } from './middleware';
 import { initSequlize } from './sequelize';
 import * as routes from '../modules/routes';
@@ -25,6 +26,8 @@ class Server {
 
     this.app.use(loggerMiddleware);
     this.app.use(express.json());
+
+    this.app.use(cors());
 
     this.initRoutes();
   }
