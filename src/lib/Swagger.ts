@@ -1,4 +1,5 @@
 import clientsRoutes from 'modules/Clients/swagger.json';
+import userRoutes from 'modules/Users/swagger.json';
 
 const SwaggerList = {
   swagger: '2.0',
@@ -80,6 +81,7 @@ const SwaggerList = {
       },
     },
     ...clientsRoutes,
+    ...userRoutes,
   },
   securityDefinitions: {
     Authorization: {

@@ -4,6 +4,7 @@ import UsersDTO from './UsersDTO';
 import * as usersService from './UsersService';
 
 export default class UsersController extends IController {
+  @Auth('admin')
   async getAll() {
     const users = await UsersDTO.findAll();
 
@@ -12,6 +13,7 @@ export default class UsersController extends IController {
     });
   }
 
+  @Auth('admin')
   async create() {
     try {
       const body = this._request.body;
@@ -23,7 +25,7 @@ export default class UsersController extends IController {
     }
   }
 
-  @Auth('all')
+  @Auth('admin')
   async get() {
     try {
       const userId = this._request.currentUser!.id as number;
@@ -35,6 +37,7 @@ export default class UsersController extends IController {
     }
   }
 
+  @Auth('admin')
   async update() {
     try {
       const params = this._request.params;
@@ -48,6 +51,7 @@ export default class UsersController extends IController {
     }
   }
 
+  @Auth('admin')
   async delete() {
     try {
       const params = this._request.params;

@@ -1,10 +1,10 @@
 {
-  "/clients": {
+  "/users": {
     "get": {
       "tags": [
-        "clients"
+        "Users"
       ],
-      "summary": "Retrive data in table clients from user logged",
+      "summary": "Retrive data from table user",
       "description": "",
       "consumes": ["application/json"],
       "produces": ["application/json"],
@@ -28,18 +28,15 @@
               "name": {
                 "type": "string"
               },
-              "cpf": {
-                "type": "string"
-              },
-              "birthdate": {
-                "type": "string",
-                "format": "date"
-              },
               "mail": {
                 "type": "string"
               },
-              "phone": {
+              "password": {
                 "type": "string"
+              },
+              "roleId": {
+                "type": "number",
+                "description": "User level id"
               }
             }
           }
@@ -60,105 +57,9 @@
     },
     "post": {
       "tags": [
-        "clients"
+        "Users"
       ],
-      "summary": "Create cliente",
-      "description": "",
-      "consumes": ["application/json"],
-      "produces": ["application/json"],
-      "parameters": [
-        {
-          "in": "body",
-          "name": "body",
-          "description": "Success",
-          "schema": {
-            "type": "object",
-            "properties": {
-              "name": {
-                "type": "string"
-              },
-              "cpf": {
-                "type": "string"
-              },
-              "birthdate": {
-                "type": "string",
-                "format": "date"
-              },
-              "mail": {
-                "type": "string"
-              },
-              "phone": {
-                "type": "string"
-              },
-              "token": {
-                "type": "string"
-              }
-            }
-          }
-        }
-      ],
-      "responses": {
-        "200": {
-          "description": "Success",
-          "schema": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "number"
-              },
-              "name": {
-                "type": "string"
-              },
-              "cpf": {
-                "type": "string"
-              },
-              "birthdate": {
-                "type": "string",
-                "format": "date"
-              },
-              "mail": {
-                "type": "string"
-              },
-              "phone": {
-                "type": "string"
-              },
-              "token": {
-                "type": "string"
-              }
-            }
-          }
-        },
-        "401": {
-          "description": "Token is not valid",
-          "schema": {
-            "type": "object",
-            "properties": {
-              "message": {
-                "type": "string",
-                "format": "string"
-              }
-            }
-          }
-        },
-        "400": {
-          "description": "Validation error",
-          "schema": {
-            "type": "object",
-            "properties": {
-              "message": {
-                "type": "string",
-                "format": "string"
-              }
-            }
-          }
-        }
-      }
-    },
-    "put": {
-      "tags": [
-        "clients"
-      ],
-      "summary": "Update current user logged",
+      "summary": "Create user, only for admins",
       "description": "",
       "consumes": ["application/json"],
       "produces": ["application/json"],
@@ -170,30 +71,24 @@
           "type": "string"
         },
         {
-          "in": "body",
           "name": "body",
-          "description": "Success",
+          "in": "body",
+          "required": true,
           "schema": {
             "type": "object",
             "properties": {
               "name": {
                 "type": "string"
               },
-              "cpf": {
-                "type": "string"
-              },
-              "birthdate": {
-                "type": "string",
-                "format": "date"
-              },
               "mail": {
                 "type": "string"
               },
-              "phone": {
+              "password": {
                 "type": "string"
               },
-              "token": {
-                "type": "string"
+              "roleId": {
+                "type": "number",
+                "description": "User level id"
               }
             }
           }
@@ -205,27 +100,18 @@
           "schema": {
             "type": "object",
             "properties": {
-              "id": {
-                "type": "number"
-              },
               "name": {
                 "type": "string"
-              },
-              "cpf": {
-                "type": "string"
-              },
-              "birthdate": {
-                "type": "string",
-                "format": "date"
               },
               "mail": {
                 "type": "string"
               },
-              "phone": {
+              "password": {
                 "type": "string"
               },
-              "token": {
-                "type": "string"
+              "roleId": {
+                "type": "number",
+                "description": "User level id"
               }
             }
           }
@@ -243,7 +129,7 @@
           }
         },
         "400": {
-          "description": "Validation error",
+          "description": "Validation error, some field is missing",
           "schema": {
             "type": "object",
             "properties": {
@@ -257,230 +143,12 @@
       }
     }
   },
-  "/clients/{id}": {
+  "/users/all": {
     "get": {
       "tags": [
-        "clients"
+        "Users"
       ],
-      "summary": "Retrive data in table clients from client ID, only for admin",
-      "description": "",
-      "consumes": ["application/json"],
-      "produces": ["application/json"],
-      "parameters": [
-        {
-          "name": "Authorization",
-          "in": "header",
-          "required": true,
-          "type": "string"
-        },
-        {
-          "name": "id",
-          "in": "path",
-          "required": true,
-          "type": "string"
-        }
-      ],
-      "responses": {
-        "200": {
-          "description": "Success",
-          "schema": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "number"
-              },
-              "name": {
-                "type": "string"
-              },
-              "cpf": {
-                "type": "string"
-              },
-              "birthdate": {
-                "type": "string",
-                "format": "date"
-              },
-              "mail": {
-                "type": "string"
-              },
-              "phone": {
-                "type": "string"
-              }
-            }
-          }
-        },
-        "401": {
-          "description": "Token is not valid",
-          "schema": {
-            "type": "object",
-            "properties": {
-              "message": {
-                "type": "string",
-                "format": "string"
-              }
-            }
-          }
-        }
-      }
-    },
-    "put": {
-      "tags": [
-        "clients"
-      ],
-      "summary": "Update client by id, only for admin",
-      "description": "",
-      "consumes": ["application/json"],
-      "produces": ["application/json"],
-      "parameters": [
-        {
-          "name": "Authorization",
-          "in": "header",
-          "required": true,
-          "type": "string"
-        },
-        {
-          "name": "id",
-          "in": "path",
-          "required": true,
-          "type": "string"
-        },
-        {
-          "in": "body",
-          "name": "body",
-          "description": "Success",
-          "schema": {
-            "type": "object",
-            "properties": {
-              "name": {
-                "type": "string"
-              },
-              "cpf": {
-                "type": "string"
-              },
-              "birthdate": {
-                "type": "string",
-                "format": "date"
-              },
-              "mail": {
-                "type": "string"
-              },
-              "phone": {
-                "type": "string"
-              },
-              "token": {
-                "type": "string"
-              }
-            }
-          }
-        }
-      ],
-      "responses": {
-        "200": {
-          "description": "Success",
-          "schema": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "number"
-              },
-              "name": {
-                "type": "string"
-              },
-              "cpf": {
-                "type": "string"
-              },
-              "birthdate": {
-                "type": "string",
-                "format": "date"
-              },
-              "mail": {
-                "type": "string"
-              },
-              "phone": {
-                "type": "string"
-              },
-              "token": {
-                "type": "string"
-              }
-            }
-          }
-        },
-        "401": {
-          "description": "Token is not valid",
-          "schema": {
-            "type": "object",
-            "properties": {
-              "message": {
-                "type": "string",
-                "format": "string"
-              }
-            }
-          }
-        },
-        "400": {
-          "description": "Validation error",
-          "schema": {
-            "type": "object",
-            "properties": {
-              "message": {
-                "type": "string",
-                "format": "string"
-              }
-            }
-          }
-        }
-      }
-    },
-    "delete": {
-      "tags": [
-        "clients"
-      ],
-      "summary": "Delete client by id, only for admin",
-      "description": "",
-      "consumes": ["application/json"],
-      "produces": ["application/json"],
-      "parameters": [
-        {
-          "name": "Authorization",
-          "in": "header",
-          "required": true,
-          "type": "string"
-        },
-        {
-          "name": "id",
-          "in": "path",
-          "required": true,
-          "type": "string"
-        }
-      ],
-      "responses": {
-        "204": {
-          "description": "Success",
-          "schema": {
-            "type": "object",
-            "properties": {}
-          }
-        },
-        "401": {
-          "description": "Token is not valid",
-          "schema": {
-            "type": "object",
-            "properties": {
-              "message": {
-                "type": "string",
-                "format": "string"
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "/clients/all": {
-    "get": {
-      "tags": [
-        "clients"
-      ],
-      "summary": "Retrive all clients add, only for admin",
+      "summary": "Retrive all user, only for admin",
       "description": "",
       "consumes": ["application/json"],
       "produces": ["application/json"],
@@ -497,33 +165,230 @@
           "description": "Success",
           "schema": {
             "type": "array",
-            "properties": [
-              {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "number"
-                  },
-                  "name": {
-                    "type": "string"
-                  },
-                  "cpf": {
-                    "type": "string"
-                  },
-                  "birthdate": {
-                    "type": "string",
-                    "format": "date"
-                  },
-                  "mail": {
-                    "type": "string"
-                  },
-                  "phone": {
-                    "type": "string"
-                  }
+            "properties": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "mail": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                },
+                "roleId": {
+                  "type": "number",
+                  "description": "User level id"
                 }
               }
-            ]
+            }
           }
+          },
+        "401": {
+          "description": "Token is not valid",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string",
+                "format": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/users/{id}": {
+    "get": {
+      "tags": [
+        "Users"
+      ],
+      "summary": "Retrive user by id, only for admin",
+      "description": "",
+      "consumes": ["application/json"],
+      "produces": ["application/json"],
+      "parameters": [
+        {
+          "name": "Authorization",
+          "in": "header",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "id",
+          "in": "path",
+          "description": "ID of user to return",
+          "required": true,
+          "type": "integer",
+          "format": "int64"
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Success",
+          "schema": {
+            "type": "array",
+            "properties": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "mail": {
+                  "type": "string"
+                },
+                "roleId": {
+                  "type": "number",
+                  "description": "User level id"
+                }
+              }
+            }
+          }
+          },
+        "401": {
+          "description": "Token is not valid",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string",
+                "format": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "put": {
+      "tags": [
+        "Users"
+      ],
+      "summary": "Create user, only for admins",
+      "description": "",
+      "consumes": ["application/json"],
+      "produces": ["application/json"],
+      "parameters": [
+        {
+          "name": "Authorization",
+          "in": "header",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "id",
+          "in": "path",
+          "description": "ID of user to update",
+          "required": true,
+          "type": "integer",
+          "format": "int64"
+        },
+        {
+          "name": "body",
+          "in": "body",
+          "required": true,
+          "schema": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "mail": {
+                "type": "string"
+              },
+              "password": {
+                "type": "string"
+              },
+              "roleId": {
+                "type": "number",
+                "description": "User level id"
+              }
+            }
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Success",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "mail": {
+                "type": "string"
+              },
+              "password": {
+                "type": "string"
+              },
+              "roleId": {
+                "type": "number",
+                "description": "User level id"
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Token is not valid",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string",
+                "format": "string"
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Validation error, some field is missing",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string",
+                "format": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "delete": {
+      "tags": [
+        "Users"
+      ],
+      "summary": "Remove user by id, only for admin",
+      "description": "",
+      "consumes": ["application/json"],
+      "produces": ["application/json"],
+      "parameters": [
+        {
+          "name": "Authorization",
+          "in": "header",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "id",
+          "in": "path",
+          "description": "ID of user to remove",
+          "required": true,
+          "type": "integer",
+          "format": "int64"
+        }
+      ],
+      "responses": {
+        "204": {
+          "description": "Success"
         },
         "401": {
           "description": "Token is not valid",
@@ -538,6 +403,6 @@
           }
         }
       }
-    } 
+    }
   }
 }
