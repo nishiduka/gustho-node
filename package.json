@@ -36,7 +36,7 @@
   "scripts": {
     "dev": "nodemon --watch 'src/' --exec 'env-cmd -f .env ts-node -r tsconfig-paths/register src/app.ts' -e ts",
     "build": "rm -rf build && tsc",
-    "start:prod": "env-cmd -f .env node build/app.js",
+    "start:prod": "env-cmd -f .env node -r ./tsconfig-paths-bootstrap.js build/app.js",
     "generate": "yarn plop --plopfile ./generators/plopfile.js"
   }
 }

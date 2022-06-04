@@ -1,5 +1,5 @@
-import clientsRoutes from 'modules/Clients/swagger.json';
-import userRoutes from 'modules/Users/swagger.json';
+import clientsRoutes from '../modules/Clients/swagger.json';
+import userRoutes from '../modules/Users/swagger.json';
 
 const SwaggerList = {
   swagger: '2.0',

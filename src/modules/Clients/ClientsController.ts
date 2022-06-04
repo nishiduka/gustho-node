@@ -1,4 +1,4 @@
-import JWTAuthentication from 'lib/JWTAuthentication';
+import JWTAuthentication from '../../lib/JWTAuthentication';
 import { Auth } from 'modules/Auth/Decorators';
 import IController from '../IController';
 import ClientsDTO from './ClientsDTO';
