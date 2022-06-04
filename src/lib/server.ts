@@ -1,5 +1,8 @@
 import express from 'express';
 import cors from 'cors';
+import SwaggerUI from 'swagger-ui-express';
+
+import swaggerDocument from './Swagger';
 import { loggerMiddleware } from './middleware';
 import { initSequlize } from './sequelize';
 import * as routes from '../modules/routes';
@@ -29,6 +32,11 @@ class Server {
 
     this.app.use(cors());
 
+    this.app.use(
+      '/api-docs',
+      SwaggerUI.serve,
+      SwaggerUI.setup(swaggerDocument)
+    );
     this.initRoutes();
   }
 

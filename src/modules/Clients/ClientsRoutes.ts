@@ -1,8 +1,16 @@
 import * as express from 'express';
 import ClientsController from './ClientsController';
 
-const ClientssRoutes = () => {
+const ClientsRoutes = () => {
   const router = express.Router();
+
+  router.get(
+    '/',
+    (request: express.Request<{ id: string }>, response: express.Response) => {
+      const clientsController = new ClientsController(request, response);
+      return clientsController.getCurrentUser();
+    }
+  );
 
   router.get('/all', (request: express.Request, response: express.Response) => {
     const clientsController = new ClientsController(request, response);
@@ -22,6 +30,11 @@ const ClientssRoutes = () => {
     return clientsController.create();
   });
 
+  router.put('/', (request: express.Request, response: express.Response) => {
+    const clientsController = new ClientsController(request, response);
+    return clientsController.updateUser();
+  });
+
   router.put('/:id', (request: express.Request, response: express.Response) => {
     const clientsController = new ClientsController(request, response);
     return clientsController.update();
@@ -38,4 +51,4 @@ const ClientssRoutes = () => {
   return router;
 };
 
-export default ClientssRoutes;
+export default ClientsRoutes;

@@ -1,8 +1,11 @@
+import JWTAuthentication from 'lib/JWTAuthentication';
+import { Auth } from 'modules/Auth/Decorators';
 import IController from '../IController';
 import ClientsDTO from './ClientsDTO';
 import * as clientsService from './ClientsService';
 
 export default class ClientsController extends IController {
+  @Auth('admin')
   async getAll() {
     const clients = await ClientsDTO.findAll();
 
@@ -15,38 +18,72 @@ export default class ClientsController extends IController {
     try {
       const body = this._request.body;
 
-      const product = await clientsService.createClients(body);
+      const { client, user } = await clientsService.createClients(body);
 
-      return this.response(product);
+      const jwt = new JWTAuthentication();
+
+      return this.response({
+        ...client,
+        token: jwt.assignToken(user),
+      });
     } catch (error: any) {
       return this.responseError(error);
     }
   }
 
+  @Auth('user')
+  async getCurrentUser() {
+    try {
+      const id = this._request.currentUser?.id as number;
+      const client = await clientsService.findOne(id.toString());
+
+      return this.response(client);
+    } catch (error: any) {
+      return this.responseError(error);
+    }
+  }
+
+  @Auth('admin')
   async get() {
     try {
       const params = this._request.params;
-      const product = await clientsService.findOne(params.id);
+      const client = await clientsService.findOne(params.id);
 
-      return this.response(product);
+      return this.response(client);
     } catch (error: any) {
       return this.responseError(error);
     }
   }
 
+  @Auth('admin')
   async update() {
     try {
       const params = this._request.params;
       const body = this._request.body;
 
-      const product = await clientsService.updateClients(params.id, body);
+      const client = await clientsService.updateClients(params.id, body);
 
-      return this.response(product);
+      return this.response(client);
     } catch (error: any) {
       return this.responseError(error);
     }
   }
 
+  @Auth('user')
+  async updateUser() {
+    try {
+      const id = this._request.currentUser?.id as number;
+      const body = this._request.body;
+
+      const client = await clientsService.updateClients(id?.toString(), body);
+
+      return this.response(client);
+    } catch (error: any) {
+      return this.responseError(error);
+    }
+  }
+
+  @Auth('admin')
   async delete() {
     try {
       const params = this._request.params;

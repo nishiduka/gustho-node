@@ -37,7 +37,7 @@ export const createClients = async (body: IClientsRequest) => {
     throw new ValidationError(validation.error);
   }
 
-  const clients = await ClientsDTO.create({
+  const client = await ClientsDTO.create({
     name: body.name,
     cpf: body.cpf,
     birthdate: body.birthdate,
@@ -52,7 +52,7 @@ export const createClients = async (body: IClientsRequest) => {
     roleId: 2,
   });
 
-  return clients;
+  return { client, user };
 };
 
 export const updateClients = async (id: string, body: IClientsCreation) => {
