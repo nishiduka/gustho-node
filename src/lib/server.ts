@@ -30,7 +30,13 @@ class Server {
     this.app.use(loggerMiddleware);
     this.app.use(express.json());
 
-    this.app.use(cors());
+    this.app.use(
+      cors({
+        origin: [
+          'https://localhost:3000, http://localhost:3000, http://localhost, https://localhost',
+        ],
+      })
+    );
 
     this.app.use(
       '/api-docs',
