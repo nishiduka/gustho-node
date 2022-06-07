@@ -6,7 +6,9 @@ export function loggerMiddleware(
   next: NextFunction
 ) {
   console.log(
-    `${request.method} ${request.path} as ${new Date().toISOString()}`
+    `${request.method} ${request.path} at ${new Date().toISOString()} ip ${
+      request.socket.localAddress
+    }`
   );
   next();
 }

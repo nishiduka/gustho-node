@@ -21,7 +21,7 @@ class Server {
     this.app.use('/api/clients', routes.ClientsRoutes());
     this.app.use('/api/users', routes.UsersRoutes());
 
-    console.log(`\n        🗺  Conexao do banco de dados estabilizada\n`);
+    console.log(`\n        🗺  Routes loaded\n`);
   }
 
   private async initModules() {
@@ -30,13 +30,7 @@ class Server {
     this.app.use(loggerMiddleware);
     this.app.use(express.json());
 
-    this.app.use(
-      cors({
-        origin: [
-          'https://localhost:3000, http://localhost:3000, http://localhost, https://localhost',
-        ],
-      })
-    );
+    this.app.use(cors());
 
     this.app.use(
       '/api-docs',
