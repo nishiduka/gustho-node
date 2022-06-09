@@ -12,3 +12,12 @@ export function loggerMiddleware(
   );
   next();
 }
+
+export function noRobots(req: Request, res: Response, next: NextFunction) {
+  res.type('text/plain');
+  res.send('User-agent: *\nDisallow: /');
+}
+
+export function noIndex(req: Request, res: Response, next: NextFunction) {
+  res.sendStatus(404);
+}
