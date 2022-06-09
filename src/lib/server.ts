@@ -15,8 +15,6 @@ class Server {
   }
 
   private initRoutes() {
-    this.app.use('/', noIndex);
-
     this.app.use('/api/auth', routes.AuthRoutes());
     this.app.use('/api/products', routes.ProductsRoutes());
     this.app.use('/api/suppliers', routes.SuppliersRoutes());

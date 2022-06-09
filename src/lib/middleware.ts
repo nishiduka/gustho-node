@@ -17,7 +17,3 @@ export function noRobots(req: Request, res: Response, next: NextFunction) {
   res.type('text/plain');
   res.send('User-agent: *\nDisallow: /');
 }
-
-export function noIndex(req: Request, res: Response, next: NextFunction) {
-  res.status(404).send('Not found');
-}
