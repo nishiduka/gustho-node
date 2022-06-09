@@ -40,15 +40,4 @@ export function Auth(level: TAuth) {
       }
     };
   };
-
-  // target: any,
-  // propertyKey: string,
-  // descriptor: IController
-  // const originalValue = descriptor.value;
-
-  // descriptor.value = function (...args: any[]) {
-  //   console.log(this._request);
-
-  //   return originalValue.apply(this, args);
-  // };
 }

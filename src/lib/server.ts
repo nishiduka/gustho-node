@@ -21,6 +21,17 @@ class Server {
     this.app.use('/api/clients', routes.ClientsRoutes());
     this.app.use('/api/users', routes.UsersRoutes());
 
+    this.app.use(
+      '/robots.txt',
+      function (
+        req: express.Request,
+        res: express.Response,
+        next: express.NextFunction
+      ) {
+        res.type('text/plain');
+        res.send('User-agent: *\nDisallow: /');
+      }
+    );
     console.log(`\n        🗺  Routes loaded\n`);
   }
 
