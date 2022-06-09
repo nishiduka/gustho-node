@@ -3,7 +3,7 @@ import cors from 'cors';
 import SwaggerUI from 'swagger-ui-express';
 
 import swaggerDocument from './Swagger';
-import { loggerMiddleware, noIndex, noRobots } from './middleware';
+import { loggerMiddleware, noRobots } from './middleware';
 import { initSequlize } from './sequelize';
 import * as routes from '../modules/routes';
 
