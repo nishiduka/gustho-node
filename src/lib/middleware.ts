@@ -19,5 +19,5 @@ export function noRobots(req: Request, res: Response, next: NextFunction) {
 }
 
 export function noIndex(req: Request, res: Response, next: NextFunction) {
-  res.sendStatus(404);
+  res.status(404).send('Not found');
 }
