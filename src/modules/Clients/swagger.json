@@ -1,9 +1,7 @@
 {
   "/clients": {
     "get": {
-      "tags": [
-        "clients"
-      ],
+      "tags": ["clients"],
       "summary": "Retrive data in table clients from user logged",
       "description": "",
       "consumes": ["application/json"],
@@ -59,9 +57,7 @@
       }
     },
     "post": {
-      "tags": [
-        "clients"
-      ],
+      "tags": ["clients"],
       "summary": "Create cliente",
       "description": "",
       "consumes": ["application/json"],
@@ -81,8 +77,7 @@
                 "type": "string"
               },
               "birthdate": {
-                "type": "string",
-                "format": "date"
+                "type": "string"
               },
               "mail": {
                 "type": "string"
@@ -90,9 +85,34 @@
               "phone": {
                 "type": "string"
               },
-              "token": {
+              "password": {
                 "type": "string"
-              }
+              },
+              "address": [
+                {
+                  "name": {
+                    "type": "string"
+                  },
+                  "streetname": {
+                    "type": "string"
+                  },
+                  "streetname2": {
+                    "type": "string"
+                  },
+                  "number": {
+                    "type": "string"
+                  },
+                  "city": {
+                    "type": "string"
+                  },
+                  "zipcode": {
+                    "type": "string"
+                  },
+                  "state": {
+                    "type": "string"
+                  }
+                }
+              ]
             }
           }
         }
@@ -124,7 +144,35 @@
               },
               "token": {
                 "type": "string"
-              }
+              },
+              "address": [
+                {
+                  "id": {
+                    "type": "number"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "streetname": {
+                    "type": "string"
+                  },
+                  "streetname2": {
+                    "type": "string"
+                  },
+                  "number": {
+                    "type": "string"
+                  },
+                  "city": {
+                    "type": "string"
+                  },
+                  "zipcode": {
+                    "type": "string"
+                  },
+                  "state": {
+                    "type": "string"
+                  }
+                }
+              ]
             }
           }
         },
@@ -155,9 +203,7 @@
       }
     },
     "put": {
-      "tags": [
-        "clients"
-      ],
+      "tags": ["clients"],
       "summary": "Update current user logged",
       "description": "",
       "consumes": ["application/json"],
@@ -194,7 +240,35 @@
               },
               "token": {
                 "type": "string"
-              }
+              },
+              "address": [
+                {
+                  "id": {
+                    "type": "number"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "streetname": {
+                    "type": "string"
+                  },
+                  "streetname2": {
+                    "type": "string"
+                  },
+                  "number": {
+                    "type": "string"
+                  },
+                  "city": {
+                    "type": "string"
+                  },
+                  "zipcode": {
+                    "type": "string"
+                  },
+                  "state": {
+                    "type": "string"
+                  }
+                }
+              ]
             }
           }
         }
@@ -222,9 +296,6 @@
                 "type": "string"
               },
               "phone": {
-                "type": "string"
-              },
-              "token": {
                 "type": "string"
               }
             }
@@ -259,9 +330,7 @@
   },
   "/clients/{id}": {
     "get": {
-      "tags": [
-        "clients"
-      ],
+      "tags": ["clients"],
       "summary": "Retrive data in table clients from client ID, only for admin",
       "description": "",
       "consumes": ["application/json"],
@@ -323,9 +392,7 @@
       }
     },
     "put": {
-      "tags": [
-        "clients"
-      ],
+      "tags": ["clients"],
       "summary": "Update client by id, only for admin",
       "description": "",
       "consumes": ["application/json"],
@@ -431,9 +498,7 @@
       }
     },
     "delete": {
-      "tags": [
-        "clients"
-      ],
+      "tags": ["clients"],
       "summary": "Delete client by id, only for admin",
       "description": "",
       "consumes": ["application/json"],
@@ -477,9 +542,7 @@
   },
   "/clients/all": {
     "get": {
-      "tags": [
-        "clients"
-      ],
+      "tags": ["clients"],
       "summary": "Retrive all clients add, only for admin",
       "description": "",
       "consumes": ["application/json"],
@@ -538,6 +601,6 @@
           }
         }
       }
-    } 
+    }
   }
 }
