@@ -35,9 +35,15 @@ export default class ClientsController extends IController {
   async getCurrentUser() {
     try {
       const id = this._request.currentUser?.id as number;
-      const client = await clientsService.findOne(id.toString());
+      const client = await await clientsService.findOneByUser(id.toString());
+      const address = await clientsService.findAddressByClient(
+        client.id.toString()
+      );
 
-      return this.response(client);
+      return this.response({
+        ...client.toJSON(),
+        address,
+      });
     } catch (error: any) {
       return this.responseError(error);
     }
@@ -83,12 +89,12 @@ export default class ClientsController extends IController {
     }
   }
 
-  @Auth('admin')
+  @Auth('user')
   async delete() {
     try {
-      const params = this._request.params;
+      const id = this._request.currentUser?.id as number;
 
-      await clientsService.removeClients(params.id);
+      await clientsService.removeClients(id.toString());
 
       return this.response('', 204);
     } catch (error: any) {

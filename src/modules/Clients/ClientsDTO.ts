@@ -1,5 +1,6 @@
+import UsersDTO from 'modules/Users/UsersDTO';
 import { DataTypes } from 'sequelize';
-import { Column, Model, Table } from 'sequelize-typescript';
+import { Column, ForeignKey, Model, Table } from 'sequelize-typescript';
 
 @Table({
   tableName: 'clients',
@@ -15,12 +16,12 @@ class ClientsDTO extends Model {
   @Column({
     type: DataTypes.STRING,
     allowNull: false,
+    unique: true,
   })
   cpf!: string;
 
   @Column({
     type: DataTypes.DATE,
-    allowNull: false,
   })
   birthdate!: Date;
 
@@ -35,6 +36,10 @@ class ClientsDTO extends Model {
     allowNull: false,
   })
   phone!: string;
+
+  @ForeignKey(() => UsersDTO)
+  @Column({ onDelete: 'cascade', type: DataTypes.INTEGER })
+  userId!: number;
 }
 
 export default ClientsDTO;

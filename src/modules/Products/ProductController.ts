@@ -1,3 +1,4 @@
+import { Auth } from 'modules/Auth/Decorators';
 import IController from '../IController';
 import ProductDTO from './ProductDTO';
 import {
@@ -15,7 +16,8 @@ class ProductController extends IController {
       products,
     });
   }
-
+  
+  @Auth('admin')
   async create() {
     try {
       const body = this._request.body;
@@ -26,7 +28,8 @@ class ProductController extends IController {
       return this.responseError(error);
     }
   }
-
+  
+  @Auth('all')
   async get() {
     try {
       const params = this._request.params;
@@ -38,6 +41,7 @@ class ProductController extends IController {
     }
   }
 
+  @Auth('admin')
   async update() {
     try {
       const params = this._request.params;
@@ -51,6 +55,7 @@ class ProductController extends IController {
     }
   }
 
+  @Auth('admin')
   async delete() {
     try {
       const params = this._request.params;

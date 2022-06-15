@@ -9,7 +9,7 @@ const UserssRoutes = () => {
     '/',
     (request: express.Request<{ id: string }>, response: express.Response) => {
       const usersController = new UsersController(request, response);
-      return usersController.get();
+      return usersController.getCurrentUser();
     }
   );
 

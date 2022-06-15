@@ -37,6 +37,18 @@ export default class UsersController extends IController {
     }
   }
 
+  @Auth('user')
+  async getCurrentUser() {
+    try {
+      const userId = this._request.currentUser!.id as number;
+      const product = await usersService.findOne(userId.toString());
+
+      return this.response(product);
+    } catch (error: any) {
+      return this.responseError(error);
+    }
+  }
+
   @Auth('admin')
   async update() {
     try {

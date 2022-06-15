@@ -1,3 +1,4 @@
+import { Auth } from 'modules/Auth/Decorators';
 import IController from '../IController';
 import SupplierContactDTO from './SupplierContactDTO';
 import SupplierDTO from './SupplierDTO';
@@ -14,6 +15,7 @@ export default class SupplierController extends IController {
     });
   }
 
+  @Auth('admin')
   async create() {
     try {
       const body = this._request.body;
@@ -36,6 +38,7 @@ export default class SupplierController extends IController {
     }
   }
 
+  @Auth('admin')
   async update() {
     try {
       const params = this._request.params;
@@ -49,6 +52,7 @@ export default class SupplierController extends IController {
     }
   }
 
+  @Auth('admin')
   async delete() {
     try {
       const params = this._request.params;
