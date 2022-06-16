@@ -22,9 +22,11 @@ export function loggerMiddleware(
   next: NextFunction
 ) {
   let method = chalk.magenta(request.method);
-  let route = chalk.blue(request.url);
+  let route = chalk.blue.bgWhite(request.url);
   let start = Date.now();
-  const ip = request.headers['x-forwarded-for'] || request.socket.localAddress;
+  const ip = chalk.yellow(
+    request.headers['x-forwarded-for'] || request.socket.localAddress
+  );
 
   response.on('finish', function (asd: any) {
     // @ts-ignore
@@ -32,7 +34,7 @@ export function loggerMiddleware(
 
     let color = statusByColor(code);
 
-    const duration = (Date.now() - start) / 1000;
+    const duration = chalk.cyan((Date.now() - start) / 1000);
 
     console.log(
       `${method} ${route} ${color} at ${new Date().toISOString()} ip ${ip} ${duration}s`
