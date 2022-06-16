@@ -16,7 +16,7 @@ class ClientsDTO extends Model {
   @Column({
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true,
+    unique: 'cpf',
   })
   cpf!: string;
 

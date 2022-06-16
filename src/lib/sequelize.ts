@@ -21,7 +21,7 @@ const loadModels = async () => {
 };
 
 const updateTables = async () => {
-  await await sequelize.sync({ alter: false, force: false });
+  await await sequelize.sync({ alter: true, force: false });
   console.log(`\n        📝 Tabelas atualizadas\n`);
 };
 

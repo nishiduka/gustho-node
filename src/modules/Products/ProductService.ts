@@ -28,6 +28,7 @@ export const createProduct = async (body: IProductsCreation) => {
     quantity: body.quantity,
     price: body.price,
     metric: body.metric,
+    supplierId: body.supplierId,
   });
 
   return product;
@@ -43,12 +44,12 @@ export const updateProduct = async (id: string, body: IProductsCreation) => {
 
     const product = await findOne(id);
 
-    (product.name = body.name),
-      (product.shortDescription = body.shortDescription || ''),
-      (product.description = body.description || ''),
-      (product.quantity = body.quantity),
-      (product.price = body.price),
-      (product.metric = body.metric);
+    product.name = body.name;
+    product.shortDescription = body.shortDescription || '';
+    product.description = body.description || '';
+    product.quantity = body.quantity;
+    product.price = body.price;
+    product.metric = body.metric;
 
     return product.save();
   } catch (error) {

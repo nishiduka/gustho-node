@@ -16,6 +16,7 @@ class UsersDTO extends Model {
   @Column({
     type: DataTypes.STRING,
     allowNull: false,
+    unique: 'mail',
   })
   mail!: string;
 

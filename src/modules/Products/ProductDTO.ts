@@ -1,5 +1,12 @@
+import SupplierDTO from 'modules/Supplier/SupplierDTO';
 import { DataTypes } from 'sequelize';
-import { Table, Model, Column } from 'sequelize-typescript';
+import {
+  Table,
+  Model,
+  Column,
+  BelongsTo,
+  ForeignKey,
+} from 'sequelize-typescript';
 
 @Table({
   tableName: 'product',
@@ -39,6 +46,13 @@ class ProductDTO extends Model {
     allowNull: false,
   })
   quantity!: number;
+
+  @BelongsTo(() => SupplierDTO)
+  supplier!: SupplierDTO;
+
+  @ForeignKey(() => SupplierDTO)
+  @Column({ onDelete: 'cascade', type: DataTypes.INTEGER })
+  supplierId!: number;
 }
 
 export default ProductDTO;
