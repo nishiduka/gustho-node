@@ -30,7 +30,7 @@ export const findOne = async (id: string): Promise<UsersDTO> => {
   return users;
 };
 
-export const createUsers = async (body: IUsersCreation) => {
+export const createUsers = async (body: IUsersCreation, transaction?: any) => {
   const validation = createSchema.validate(body);
 
   if (validation.error) {
@@ -41,15 +41,24 @@ export const createUsers = async (body: IUsersCreation) => {
 
   const password = await hashPassword(body.password!);
 
-  const user = await UsersDTO.create({
-    ...body,
-    password,
-  });
+  const user = await UsersDTO.create(
+    {
+      ...body,
+      password,
+    },
+    {
+      transaction: transaction || undefined,
+    }
+  );
 
   return user;
 };
 
-export const updateUsers = async (id: string, body: IUsersCreation) => {
+export const updateUsers = async (
+  id: string,
+  body: IUsersCreation,
+  transaction?: any
+) => {
   try {
     const validation = updateSchema.validate(body);
 
@@ -66,7 +75,7 @@ export const updateUsers = async (id: string, body: IUsersCreation) => {
       users.password = body.password;
     }
 
-    return users.save();
+    return users.save({ transaction: transaction || undefined });
   } catch (error) {
     throw error;
   }

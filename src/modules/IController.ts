@@ -16,6 +16,7 @@ export default class IController {
   }
 
   responseError(error: RequestError): void {
+    console.log('error:::', error);
     this._response.status(error?.statusCode || 500).json({
       message: error.message || `Ocorreu algum erro!`,
     });

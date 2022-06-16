@@ -10,6 +10,7 @@ import {
   updateUsers,
 } from '../../modules/Users/UsersService';
 import ClientsAddressDTO from './ClientsAddressDTO';
+import { sequelize } from 'lib/sequelize';
 
 export const validateMailInUse = async (mail: string): Promise<boolean> => {
   const clients = await ClientsDTO.findOne({
@@ -79,8 +80,12 @@ export const findOne = async (id: string): Promise<ClientsDTO> => {
   return clients;
 };
 
-export const saveAddress = async (address: IAddress[], clientId: number) => {
-  if (!address.length) {
+export const saveAddress = async (
+  address: IAddress[],
+  clientId: number,
+  transaction?: any
+) => {
+  if (!address?.length) {
     return;
   }
 
@@ -93,12 +98,15 @@ export const saveAddress = async (address: IAddress[], clientId: number) => {
     };
   });
 
-  return await ClientsAddressDTO.bulkCreate(data);
+  return await ClientsAddressDTO.bulkCreate(data, {
+    transaction: transaction || undefined,
+  });
 };
 
 export const updateAddress = async (
   allAddress: IAddress[],
-  clientId: number
+  clientId: number,
+  transaction?: any
 ) => {
   if (!allAddress?.length) {
     return [];
@@ -134,7 +142,7 @@ export const updateAddress = async (
 
   let otherAddress = [] as any;
   if (addressToInsert.length) {
-    otherAddress = await saveAddress(addressToInsert, clientId);
+    otherAddress = await saveAddress(addressToInsert, clientId, transaction);
   }
 
   return [...addresses, ...otherAddress];
@@ -148,70 +156,83 @@ export const createClients = async (body: IClientsRequest) => {
   }
 
   await Promise.all([validateMailInUse(body.mail), validateCPFInUse(body.cpf)]);
+  const transaction = await sequelize.transaction();
 
-  const user = await createUsers({
-    name: body.name,
-    mail: body.mail,
-    password: body.password,
-    roleId: 2,
-  });
+  const user = await createUsers(
+    {
+      name: body.name,
+      mail: body.mail,
+      password: body.password,
+      roleId: 2,
+    },
+    transaction
+  );
 
-  const clientRaw = await ClientsDTO.create({
-    name: body.name,
-    cpf: body.cpf,
-    birthdate: body.birthdate,
-    mail: body.mail,
-    phone: body.phone,
-    userId: user.id,
-  });
+  const clientRaw = await ClientsDTO.create(
+    {
+      name: body.name,
+      cpf: body.cpf,
+      birthdate: body.birthdate,
+      mail: body.mail,
+      phone: body.phone,
+      userId: user.id,
+    },
+    { transaction }
+  );
 
   const client = {
     ...clientRaw.toJSON(),
     address: await saveAddress(body.address, clientRaw.id),
   };
 
+  transaction.commit();
   return { client, user: user.toJSON() };
 };
 
 export const updateClients = async (id: string, body: IClientsCreation) => {
-  try {
-    const validation = updateSchema.validate(body);
+  const validation = updateSchema.validate(body);
 
-    if (validation.error) {
-      throw validation.error;
-    }
-    if (body.name && body.mail && body.password) {
-      await updateUsers(id, {
+  if (validation.error) {
+    throw validation.error;
+  }
+  const transaction = await sequelize.transaction();
+
+  if (body.name && body.mail && body.password) {
+    await updateUsers(
+      id,
+      {
         name: body.name,
         mail: body.mail,
         password: body.password,
-      });
-    }
-    let clients = await findOneByUser(id);
-
-    if (body.name) {
-      clients.name = body.name;
-    }
-    if (body.mail) {
-      clients.mail = body.mail;
-    }
-    if (body.phone) {
-      clients.phone = body.phone;
-    }
-
-    const address = await updateAddress(body.address, clients.id);
-
-    clients.save();
-
-    return {
-      ...clients.toJSON(),
-      address,
-    };
-  } catch (error) {
-    console.log('error:::', error);
-
-    throw error;
+      },
+      transaction
+    );
   }
+  let clients = await findOneByUser(id);
+
+  if (body.name) {
+    clients.name = body.name;
+  }
+  if (body.mail) {
+    clients.mail = body.mail;
+  }
+  if (body.phone) {
+    clients.phone = body.phone;
+  }
+
+  const address = await updateAddress(body.address, clients.id, transaction);
+
+  console.log('clients.changed():::', clients.changed());
+  if (clients.changed()) {
+    clients.save();
+  }
+
+  transaction.commit();
+
+  return {
+    ...clients.toJSON(),
+    address,
+  };
 };
 
 export const removeClients = async (id: string) => {
