@@ -100,7 +100,7 @@ export const updateAddress = async (
   allAddress: IAddress[],
   clientId: number
 ) => {
-  if (!allAddress.length) {
+  if (!allAddress?.length) {
     return [];
   }
 
@@ -180,7 +180,6 @@ export const updateClients = async (id: string, body: IClientsCreation) => {
     if (validation.error) {
       throw validation.error;
     }
-
     if (body.name && body.mail && body.password) {
       await updateUsers(id, {
         name: body.name,
