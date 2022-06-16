@@ -88,31 +88,38 @@
               "password": {
                 "type": "string"
               },
-              "address": [
-                {
-                  "name": {
-                    "type": "string"
-                  },
-                  "streetname": {
-                    "type": "string"
-                  },
-                  "streetname2": {
-                    "type": "string"
-                  },
-                  "number": {
-                    "type": "string"
-                  },
-                  "city": {
-                    "type": "string"
-                  },
-                  "zipcode": {
-                    "type": "string"
-                  },
-                  "state": {
-                    "type": "string"
+              "address": {
+                "type":"array",
+                "items": {
+                  "type": "object",
+                  "properties":  {
+                    "id": {
+                      "type": "number"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "streetname": {
+                      "type": "string"
+                    },
+                    "streetname2": {
+                      "type": "string"
+                    },
+                    "number": {
+                      "type": "string"
+                    },
+                    "city": {
+                      "type": "string"
+                    },
+                    "zipcode": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    }
                   }
                 }
-              ]
+              }
             }
           }
         }
@@ -145,34 +152,38 @@
               "token": {
                 "type": "string"
               },
-              "address": [
-                {
-                  "id": {
-                    "type": "number"
-                  },
-                  "name": {
-                    "type": "string"
-                  },
-                  "streetname": {
-                    "type": "string"
-                  },
-                  "streetname2": {
-                    "type": "string"
-                  },
-                  "number": {
-                    "type": "string"
-                  },
-                  "city": {
-                    "type": "string"
-                  },
-                  "zipcode": {
-                    "type": "string"
-                  },
-                  "state": {
-                    "type": "string"
+              "address": {
+                "type":"array",
+                "items": {
+                  "type": "object",
+                  "properties":  {
+                    "id": {
+                      "type": "number"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "streetname": {
+                      "type": "string"
+                    },
+                    "streetname2": {
+                      "type": "string"
+                    },
+                    "number": {
+                      "type": "string"
+                    },
+                    "city": {
+                      "type": "string"
+                    },
+                    "zipcode": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    }
                   }
                 }
-              ]
+              }
             }
           }
         },
@@ -238,37 +249,38 @@
               "phone": {
                 "type": "string"
               },
-              "token": {
-                "type": "string"
-              },
-              "address": [
-                {
-                  "id": {
-                    "type": "number"
-                  },
-                  "name": {
-                    "type": "string"
-                  },
-                  "streetname": {
-                    "type": "string"
-                  },
-                  "streetname2": {
-                    "type": "string"
-                  },
-                  "number": {
-                    "type": "string"
-                  },
-                  "city": {
-                    "type": "string"
-                  },
-                  "zipcode": {
-                    "type": "string"
-                  },
-                  "state": {
-                    "type": "string"
+              "address": {
+                "type":"array",
+                "items": {
+                  "type": "object",
+                  "properties":  {
+                    "id": {
+                      "type": "number"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "streetname": {
+                      "type": "string"
+                    },
+                    "streetname2": {
+                      "type": "string"
+                    },
+                    "number": {
+                      "type": "string"
+                    },
+                    "city": {
+                      "type": "string"
+                    },
+                    "zipcode": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    }
                   }
                 }
-              ]
+              }
             }
           }
         }
@@ -424,8 +436,7 @@
                 "type": "string"
               },
               "birthdate": {
-                "type": "string",
-                "format": "date"
+                "type": "string"
               },
               "mail": {
                 "type": "string"
@@ -433,8 +444,40 @@
               "phone": {
                 "type": "string"
               },
-              "token": {
+              "password": {
                 "type": "string"
+              },
+              "address": {
+                "type":"array",
+                "items": {
+                  "type": "object",
+                  "properties":  {
+                    "id": {
+                      "type": "number"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "streetname": {
+                      "type": "string"
+                    },
+                    "streetname2": {
+                      "type": "string"
+                    },
+                    "number": {
+                      "type": "string"
+                    },
+                    "city": {
+                      "type": "string"
+                    },
+                    "zipcode": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    }
+                  }
+                }
               }
             }
           }
@@ -560,7 +603,7 @@
           "description": "Success",
           "schema": {
             "type": "array",
-            "properties": [
+            "items": [
               {
                 "type": "object",
                 "properties": {

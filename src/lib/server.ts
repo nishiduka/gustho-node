@@ -20,6 +20,7 @@ class Server {
     this.app.use('/api/suppliers', routes.SuppliersRoutes());
     this.app.use('/api/clients', routes.ClientsRoutes());
     this.app.use('/api/users', routes.UsersRoutes());
+    this.app.use('/api/checkout', routes.CheckoutRoutes());
 
     this.app.use('/robots.txt', noRobots);
 

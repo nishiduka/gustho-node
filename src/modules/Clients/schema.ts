@@ -48,23 +48,11 @@ export const createSchema = Joi.object({
 export const updateSchema = Joi.object({
   id: Joi.number(),
   userId: Joi.number(),
-  name: Joi.string().required(),
-  cpf: Joi.string()
-    .required()
-    .custom((value, helper) => {
-      if (!ValidateCPF(value)) {
-        return helper.error('cpf.invalid');
-      }
-
-      return value;
-    })
-    .messages({
-      'cpf.invalid': 'CPF is not valid',
-    }),
-  birthdate: Joi.date().required(),
-  mail: Joi.string().required(),
+  name: Joi.string(),
+  cpf: Joi.string(),
+  birthdate: Joi.date(),
+  mail: Joi.string(),
   phone: Joi.string()
-    .required()
     .custom((value, helper) => {
       const regex = new RegExp(/(\([0-9]{2}\)) ([0-9]{8,9})/g);
 

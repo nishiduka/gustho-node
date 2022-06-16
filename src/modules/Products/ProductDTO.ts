@@ -1,3 +1,5 @@
+import CheckoutDTO from 'modules/Checkout/CheckoutDTO';
+import CheckoutItemsDTO from 'modules/Checkout/CheckoutItemsDTO';
 import SupplierDTO from 'modules/Supplier/SupplierDTO';
 import { DataTypes } from 'sequelize';
 import {
@@ -6,13 +8,16 @@ import {
   Column,
   BelongsTo,
   ForeignKey,
+  BelongsToMany,
+  HasMany,
 } from 'sequelize-typescript';
+import { IProducts } from './TProduct';
 
 @Table({
   tableName: 'product',
   timestamps: true,
 })
-class ProductDTO extends Model {
+class ProductDTO extends Model<IProducts, Omit<IProducts, 'id'>> {
   @Column({
     type: DataTypes.STRING,
     allowNull: false,
@@ -36,7 +41,7 @@ class ProductDTO extends Model {
   metric!: string;
 
   @Column({
-    type: DataTypes.FLOAT,
+    type: DataTypes.DOUBLE,
     allowNull: false,
   })
   price!: number;
@@ -53,6 +58,12 @@ class ProductDTO extends Model {
   @ForeignKey(() => SupplierDTO)
   @Column({ onDelete: 'cascade', type: DataTypes.INTEGER })
   supplierId!: number;
+
+  @BelongsToMany(() => CheckoutDTO, () => CheckoutItemsDTO)
+  checkouts!: CheckoutDTO;
+
+  @HasMany(() => CheckoutItemsDTO)
+  checkoutItems!: CheckoutItemsDTO;
 }
 
 export default ProductDTO;

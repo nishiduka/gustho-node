@@ -100,6 +100,10 @@ export const updateAddress = async (
   allAddress: IAddress[],
   clientId: number
 ) => {
+  if (!allAddress.length) {
+    return [];
+  }
+
   const addresses = await ClientsAddressDTO.findAll({
     where: {
       clientId,
@@ -177,16 +181,24 @@ export const updateClients = async (id: string, body: IClientsCreation) => {
       throw validation.error;
     }
 
-    await updateUsers(id, {
-      name: body.name,
-      mail: body.mail,
-      password: body.password,
-    });
+    if (body.name && body.mail && body.password) {
+      await updateUsers(id, {
+        name: body.name,
+        mail: body.mail,
+        password: body.password,
+      });
+    }
     let clients = await findOneByUser(id);
 
-    clients.name = body.name;
-    clients.mail = body.mail;
-    clients.phone = body.phone;
+    if (body.name) {
+      clients.name = body.name;
+    }
+    if (body.mail) {
+      clients.mail = body.mail;
+    }
+    if (body.phone) {
+      clients.phone = body.phone;
+    }
 
     const address = await updateAddress(body.address, clients.id);
 
