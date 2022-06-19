@@ -1,0 +1,107 @@
+{
+  "/checkout": {
+    "post": {
+      "tags": ["Checkout"],
+      "summary": "Create a sell",
+      "description": "",
+      "consumes": ["application/json"],
+      "produces": ["application/json"],
+      "parameters": [
+        {
+          "name": "Authorization",
+          "in": "header",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "body",
+          "in": "body",
+          "required": true,
+          "schema": {
+            "type": "object",
+            "properties": {
+              "fretePrice": {
+                "type": "number"
+              },
+              "clientAddressId": {
+                "type": "number"
+              },
+              "products": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "productId": {
+                      "type": "number"
+                    },
+                    "quantity": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Success",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number"
+              },
+              "status": {
+                "type": "string"
+              },
+              "fretePrice": {
+                "type": "number"
+              },
+              "total": {
+                "type": "number"
+              },
+              "clientsId": {
+                "type": "number"
+              },
+              "clientAddressId": {
+                "type": "number"
+              },
+              "updatedAt": {
+                "type": "string"
+              },
+              "createdAt": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Token is not valid",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string",
+                "format": "string"
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Some product is not avaliable",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string",
+                "description": "Product id 12 not avaliable"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
