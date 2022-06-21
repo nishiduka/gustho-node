@@ -24,7 +24,7 @@ export const findOne = async (id: string): Promise<CheckoutDTO> => {
 export const checkDisponibility = async (id: string): Promise<number> => {
   const [total, meta] = await sequelize.query(
     `
-      SELECT product.quantity - SUM(item.quantity) AS avaliable
+      SELECT IFNULL(product.quantity - SUM(item.quantity), product.quantity) AS avaliable
 
       FROM checkout_items AS item
       INNER JOIN product ON product.id=item.productId
@@ -90,7 +90,6 @@ export const createCheckout = async (id: string, body: ICheckoutCreation) => {
   const checkout = await CheckoutDTO.create(
     {
       status: 'paid',
-      fretePrice: body.fretePrice,
       total: 0,
       clientsId: currentUser.id,
       clientAddressId: body.clientAddressId,

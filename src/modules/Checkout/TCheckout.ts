@@ -9,7 +9,6 @@ export interface ICheckoutItems {
 export interface ICheckout {
   id: number;
   status: string;
-  fretePrice: number;
   total: number;
   clientsId: number;
   clientAddressId: number;

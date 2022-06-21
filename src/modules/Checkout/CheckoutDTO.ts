@@ -29,12 +29,6 @@ class CheckoutDTO extends Model<ICheckout, Omit<ICheckout, 'id'>> {
     type: DataTypes.DOUBLE,
     allowNull: false,
   })
-  fretePrice!: number;
-
-  @Column({
-    type: DataTypes.DOUBLE,
-    allowNull: false,
-  })
   total!: number;
 
   @BelongsTo(() => ClientsDTO)
