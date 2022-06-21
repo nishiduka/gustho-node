@@ -1,11 +1,18 @@
 import ProductDTO from './ProductDTO';
 import { createSchema } from './schema';
-import { IProductsCreation } from './TProduct';
+import {
+  IProductsCreation,
+  TPaginateProduct,
+  TProductsQuery,
+  TTotalQuery,
+} from './TProduct';
 import { NotFoundError } from '../../utils/NotFoundError';
 import { ValidationError } from '../../utils/ValidationError';
 import { saveFileBaseLocally } from 'utils/Upload';
 import { slugify } from 'utils/Slughfy';
 import { saveMedia } from 'modules/Media/MediaService';
+import { sequelize } from 'lib/sequelize';
+import { QueryTypes } from 'sequelize';
 
 export const findOne = async (id: string): Promise<ProductDTO> => {
   const product = await ProductDTO.findByPk(parseInt(id));
@@ -15,6 +22,74 @@ export const findOne = async (id: string): Promise<ProductDTO> => {
   }
 
   return product;
+};
+
+export const findPaginate = async ({
+  page = '1',
+  limit = '10',
+  search = '',
+}: {
+  page: string;
+  limit: string;
+  search: string;
+}): Promise<TPaginateProduct> => {
+  const pageNum = parseInt(page);
+  const limitNum = parseInt(limit);
+
+  let where = 'WHERE IFNULL(media.order = 1, true)';
+  if (search) {
+    const searchAnyValue = search
+      .split(' ')
+      .map((item) => `%${item}%`)
+      .join(' ');
+
+    where += `AND product.name LIKE "${searchAnyValue}"`;
+  }
+
+  const conditions = `
+    FROM product 
+    LEFT JOIN checkout_items as citem ON product.id = citem.productId
+    LEFT JOIN media ON media.productId = product.id
+    ${where}
+  `;
+
+  const [products, [{ total }]] = await Promise.all([
+    sequelize.query(
+      `
+      SELECT 
+        product.id, 
+        product.name, 
+        product.shortDescription, 
+        IFNULL(product.quantity - SUM(citem.quantity), product.quantity) AS avaliable, 
+        media.path as imgUrl
+
+      ${conditions}
+      GROUP BY product.id, media.id
+      HAVING avaliable > 0
+      LIMIT ${limitNum}
+      OFFSET ${limitNum * (pageNum - 1)};
+    `,
+      { type: QueryTypes.SELECT, nest: true }
+    ) as Promise<TProductsQuery[]>,
+    sequelize.query(
+      `
+      SELECT COUNT(*) as total from (
+        SELECT product.id
+        ${conditions}
+        group by product.id
+      ) as total
+    `,
+      { type: QueryTypes.SELECT }
+    ) as Promise<TTotalQuery[]>,
+  ]);
+
+  return {
+    data: products,
+    total,
+    pages: Math.ceil(total / limitNum),
+    page: pageNum,
+    limit: limitNum,
+  };
 };
 
 export const createProduct = async (body: IProductsCreation) => {

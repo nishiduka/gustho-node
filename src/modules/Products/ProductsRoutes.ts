@@ -10,6 +10,14 @@ const productsRoutes = () => {
   });
 
   router.get(
+    '/paginate',
+    (request: express.Request, response: express.Response) => {
+      const productController = new ProductController(request, response);
+      return productController.getPaginate();
+    }
+  );
+
+  router.get(
     '/:id',
     (request: express.Request<{ id: string }>, response: express.Response) => {
       const productController = new ProductController(request, response);

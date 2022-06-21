@@ -6,6 +6,7 @@ import {
   createProduct,
   updateProduct,
   removeProduct,
+  findPaginate,
 } from './ProductService';
 
 class ProductController extends IController {
@@ -16,7 +17,7 @@ class ProductController extends IController {
       products,
     });
   }
-  
+
   @Auth('admin')
   async create() {
     try {
@@ -28,7 +29,18 @@ class ProductController extends IController {
       return this.responseError(error);
     }
   }
-  
+
+  async getPaginate() {
+    try {
+      const query = this._request.query as any;
+      const product = await findPaginate(query);
+
+      return this.response(product);
+    } catch (error: any) {
+      return this.responseError(error);
+    }
+  }
+
   @Auth('all')
   async get() {
     try {
