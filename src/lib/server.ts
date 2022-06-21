@@ -16,11 +16,11 @@ class Server {
   }
 
   private initRoutes() {
-    this.app.use('/auth', routes.AuthRoutes());
-    this.app.use('/products', routes.ProductsRoutes());
-    this.app.use('/clients', routes.ClientsRoutes());
-    this.app.use('/users', routes.UsersRoutes());
-    this.app.use('/checkout', routes.CheckoutRoutes());
+    this.app.use('/api/auth', routes.AuthRoutes());
+    this.app.use('/api/products', routes.ProductsRoutes());
+    this.app.use('/api/clients', routes.ClientsRoutes());
+    this.app.use('/api/users', routes.UsersRoutes());
+    this.app.use('/api/checkout', routes.CheckoutRoutes());
 
     console.log(`\n        🗺  Routes loaded\n`);
   }
