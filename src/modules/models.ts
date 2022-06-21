@@ -3,10 +3,9 @@ import ClientsAddress from './Clients/ClientsAddressDTO';
 import Checkout from './Checkout/CheckoutDTO';
 import CheckoutItems from './Checkout/CheckoutItemsDTO';
 import Product from './Products/ProductDTO';
-import Supplier from './Supplier/SupplierDTO';
-import SupplierContactDTO from './Supplier/SupplierContactDTO';
 import Users from './Users/UsersDTO';
 import UsersRoles from './Users/UsersRolesDTO';
+import Media from './Media/MediaDTO';
 
 export const listModel = [
   Clients,
@@ -14,8 +13,7 @@ export const listModel = [
   CheckoutItems,
   Checkout,
   Product,
-  Supplier,
-  SupplierContactDTO,
   UsersRoles,
   Users,
+  Media,
 ];

@@ -7,5 +7,5 @@ export const createSchema = Joi.object({
   price: Joi.number().required(),
   quantity: Joi.number().required(),
   metric: Joi.string().required(),
-  supplierId: Joi.number().required(),
+  images: Joi.array().items(Joi.string()),
 });

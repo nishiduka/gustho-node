@@ -3,6 +3,9 @@ import { createSchema } from './schema';
 import { IProductsCreation } from './TProduct';
 import { NotFoundError } from '../../utils/NotFoundError';
 import { ValidationError } from '../../utils/ValidationError';
+import { saveFileBaseLocally } from 'utils/Upload';
+import { slugify } from 'utils/Slughfy';
+import { saveMedia } from 'modules/Media/MediaService';
 
 export const findOne = async (id: string): Promise<ProductDTO> => {
   const product = await ProductDTO.findByPk(parseInt(id));
@@ -28,8 +31,16 @@ export const createProduct = async (body: IProductsCreation) => {
     quantity: body.quantity,
     price: body.price,
     metric: body.metric,
-    supplierId: body.supplierId,
   });
+
+  if (body.images) {
+    await saveMedia(
+      body.images,
+      slugify(product.name),
+      `products/${product.id}`,
+      product.id
+    );
+  }
 
   return product;
 };

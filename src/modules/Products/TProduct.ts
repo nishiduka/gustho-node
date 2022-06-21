@@ -6,7 +6,7 @@ export interface IProducts {
   metric: string;
   price: number;
   quantity: number;
-  supplierId: number;
+  images?: string[];
 }
 
 export interface IProductsCreation extends Omit<IProducts, 'id'> {}

@@ -1,16 +1,14 @@
-import CheckoutDTO from 'modules/Checkout/CheckoutDTO';
-import CheckoutItemsDTO from 'modules/Checkout/CheckoutItemsDTO';
-import SupplierDTO from 'modules/Supplier/SupplierDTO';
 import { DataTypes } from 'sequelize';
 import {
   Table,
   Model,
   Column,
-  BelongsTo,
-  ForeignKey,
   BelongsToMany,
   HasMany,
 } from 'sequelize-typescript';
+
+import CheckoutDTO from 'modules/Checkout/CheckoutDTO';
+import CheckoutItemsDTO from 'modules/Checkout/CheckoutItemsDTO';
 import { IProducts } from './TProduct';
 
 @Table({
@@ -51,13 +49,6 @@ class ProductDTO extends Model<IProducts, Omit<IProducts, 'id'>> {
     allowNull: false,
   })
   quantity!: number;
-
-  @BelongsTo(() => SupplierDTO)
-  supplier!: SupplierDTO;
-
-  @ForeignKey(() => SupplierDTO)
-  @Column({ onDelete: 'cascade', type: DataTypes.INTEGER })
-  supplierId!: number;
 
   @BelongsToMany(() => CheckoutDTO, () => CheckoutItemsDTO)
   checkouts!: CheckoutDTO;
