@@ -26,10 +26,10 @@ export const checkDisponibility = async (id: string): Promise<number> => {
     `
       SELECT IFNULL(product.quantity - SUM(item.quantity), product.quantity) AS avaliable
 
-      FROM checkout_items AS item
-      INNER JOIN product ON product.id=item.productId
+      FROM product
+      LEFT JOIN checkout_items AS item ON product.id=item.productId
 
-      WHERE item.productId = ${id}
+      WHERE product.id = ${id}
     `,
     { type: QueryTypes.SELECT }
   );
