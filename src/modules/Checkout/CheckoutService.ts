@@ -87,24 +87,30 @@ export const createCheckout = async (id: string, body: ICheckoutCreation) => {
 
   const transaction = await sequelize.transaction();
 
-  const checkout = await CheckoutDTO.create(
-    {
-      status: 'paid',
-      total: 0,
-      clientsId: currentUser.id,
-      clientAddressId: body.clientAddressId,
-    },
-    { transaction }
-  );
+  try {
+    const checkout = await CheckoutDTO.create(
+      {
+        status: 'paid',
+        total: 0,
+        clientsId: currentUser.id,
+        clientAddressId: body.clientAddressId,
+      },
+      { transaction }
+    );
 
-  const all = await appendProducts(body.products, checkout.id, transaction);
+    const all = await appendProducts(body.products, checkout.id, transaction);
 
-  checkout.total = all.total;
-  checkout.save();
+    checkout.total = all.total;
+    checkout.save();
 
-  await transaction.commit();
+    await transaction.commit();
 
-  return checkout;
+    return checkout;
+  } catch (error) {
+    transaction.rollback();
+
+    throw error;
+  }
 };
 
 export const updateCheckout = async (id: string, body: ICheckoutCreation) => {
