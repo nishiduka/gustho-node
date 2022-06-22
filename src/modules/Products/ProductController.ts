@@ -7,15 +7,15 @@ import {
   updateProduct,
   removeProduct,
   findPaginate,
+  getAllPaginate,
 } from './ProductService';
 
 class ProductController extends IController {
   async getAll() {
-    const products = await ProductDTO.findAll();
+    const query = this._request.query as any;
+    const products = await getAllPaginate(query);
 
-    return this.response({
-      products,
-    });
+    return this.response(products);
   }
 
   @Auth('admin')

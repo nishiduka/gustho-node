@@ -3,6 +3,7 @@ import { createSchema } from './schema';
 import {
   IProductsCreation,
   TPaginateProduct,
+  TPaginateProductAll,
   TProductsQuery,
   TTotalQuery,
 } from './TProduct';
@@ -12,7 +13,7 @@ import { saveFileBaseLocally } from 'utils/Upload';
 import { slugify } from 'utils/Slughfy';
 import { saveMedia } from 'modules/Media/MediaService';
 import { sequelize } from 'lib/sequelize';
-import { QueryTypes } from 'sequelize';
+import { Op, QueryTypes } from 'sequelize';
 
 export const findOne = async (id: string): Promise<ProductDTO> => {
   const product = await ProductDTO.findByPk(parseInt(id));
@@ -85,6 +86,61 @@ export const findPaginate = async ({
 
   return {
     data: products,
+    total,
+    pages: Math.ceil(total / limitNum),
+    page: pageNum,
+    limit: limitNum,
+  };
+};
+
+export const getAllPaginate = async ({
+  page = '1',
+  limit = '10',
+  search = '',
+}: {
+  page: string;
+  limit: string;
+  search: string;
+}): Promise<TPaginateProductAll> => {
+  const pageNum = parseInt(page);
+  const limitNum = parseInt(limit);
+
+  let searchAnyValue = '%';
+  let where = '';
+  if (search) {
+    searchAnyValue = search
+      .split(' ')
+      .map((item) => `%${item}%`)
+      .join(' ');
+
+    where = `WHERE name LIKE "${searchAnyValue}"`;
+  }
+
+  const [products, [{ total }]] = await Promise.all([
+    ProductDTO.findAll({
+      where: {
+        name: {
+          [Op.like]: searchAnyValue,
+        },
+      },
+      limit: limitNum,
+      offset: limitNum * (pageNum - 1),
+    }),
+    sequelize.query(
+      `
+      SELECT COUNT(*) as total from (
+        SELECT product.id
+        FROM product
+        ${where} 
+        group by product.id
+      ) as total
+    `,
+      { type: QueryTypes.SELECT }
+    ) as Promise<TTotalQuery[]>,
+  ]);
+
+  return {
+    data: products as any,
     total,
     pages: Math.ceil(total / limitNum),
     page: pageNum,

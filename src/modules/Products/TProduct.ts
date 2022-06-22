@@ -30,3 +30,11 @@ export type TPaginateProduct = {
   page: number;
   limit: number;
 };
+
+export type TPaginateProductAll = {
+  data: IProducts[];
+  total: number;
+  pages: number;
+  page: number;
+  limit: number;
+};
