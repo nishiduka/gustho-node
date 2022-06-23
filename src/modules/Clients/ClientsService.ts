@@ -1,6 +1,12 @@
 import ClientsDTO from './ClientsDTO';
 import { createSchema, updateSchema } from './schema';
-import { IAddress, IClientsCreation, IClientsRequest } from './TClients';
+import {
+  IAddress,
+  IClientsCreation,
+  IClientsRequest,
+  TPaginateClient,
+  TTotalQuery,
+} from './TClients';
 import { NotFoundError } from '../../utils/NotFoundError';
 import { ValidationError } from '../../utils/ValidationError';
 import { RequestError } from '../../utils/RequestError';
@@ -11,6 +17,7 @@ import {
 } from '../../modules/Users/UsersService';
 import ClientsAddressDTO from './ClientsAddressDTO';
 import { sequelize } from 'lib/sequelize';
+import { Op, QueryTypes } from 'sequelize';
 
 export const validateMailInUse = async (mail: string): Promise<boolean> => {
   const clients = await ClientsDTO.findOne({
@@ -38,6 +45,70 @@ export const validateCPFInUse = async (cpf: string): Promise<boolean> => {
   }
 
   return false;
+};
+
+export const getAllPaginate = async ({
+  page = '1',
+  limit = '10',
+  search = '',
+}: {
+  page: string;
+  limit: string;
+  search: string;
+}): Promise<TPaginateClient> => {
+  const pageNum = parseInt(page);
+  const limitNum = parseInt(limit);
+
+  let searchAnyValue = '%';
+  let where = '';
+  if (search) {
+    searchAnyValue = search
+      .split(' ')
+      .map((item) => `%${item}%`)
+      .join(' ');
+
+    where = `WHERE name LIKE "${searchAnyValue}"`;
+  }
+
+  const [clients, [{ total }]] = await Promise.all([
+    ClientsDTO.findAll({
+      attributes: [
+        'id',
+        'name',
+        'birthdate',
+        'mail',
+        'phone',
+        'createdAt',
+        'updatedAt',
+      ],
+      where: {
+        name: {
+          [Op.like]: searchAnyValue,
+        },
+      },
+      limit: limitNum,
+      offset: limitNum * (pageNum - 1),
+    }),
+    sequelize.query(
+      `
+      SELECT COUNT(*) as total from (
+        SELECT clients.id
+        FROM clients
+        ${where} 
+        group by clients.id
+      ) as total
+    `,
+      { type: QueryTypes.SELECT }
+    ) as Promise<TTotalQuery[]>,
+  ]);
+
+  return {
+    data: clients as any,
+    total,
+    pages: Math.ceil(total / limitNum),
+    page: pageNum,
+    limit: limitNum,
+  };
 };
 
 export const findOneByUser = async (id: string): Promise<ClientsDTO> => {
@@ -155,7 +226,10 @@ export const createClients = async (body: IClientsRequest) => {
     throw new ValidationError(validation.error);
   }
 
-  await Promise.all([validateMailInUse(body.mail), validateCPFInUse(body.cpf)]);
+  await Promise.all([
+    validateMailInUse(body.mail),
+    validateCPFInUse(body.cpf || ''),
+  ]);
   const transaction = await sequelize.transaction();
 
   const user = await createUsers(

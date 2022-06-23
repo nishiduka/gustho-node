@@ -7,11 +7,10 @@ import * as clientsService from './ClientsService';
 export default class ClientsController extends IController {
   @Auth('admin')
   async getAll() {
-    const clients = await ClientsDTO.findAll();
+    const query = this._request.query as any;
+    const clients = await clientsService.getAllPaginate(query);
 
-    return this.response({
-      clients,
-    });
+    return this.response(clients);
   }
 
   async create() {

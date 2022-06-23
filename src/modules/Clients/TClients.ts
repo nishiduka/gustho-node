@@ -1,7 +1,7 @@
 export interface IClients {
   id: number;
   name: string;
-  cpf: string;
+  cpf?: string;
   birthdate: Date;
   mail: string;
   phone: string;
@@ -27,3 +27,31 @@ export interface IClientsRequest extends IClients {
 export interface IClientsCreation extends Omit<IClients, 'id'> {
   password?: string;
 }
+
+export type TClientsQuery = {
+  id: number;
+  name: string;
+  birthdate: Date;
+  mail: string;
+  phone: string;
+};
+
+export type TTotalQuery = {
+  total: number;
+};
+
+export type TPaginateClient = {
+  data: TClientsQuery[];
+  total: number;
+  pages: number;
+  page: number;
+  limit: number;
+};
+
+export type TPaginateClientAll = {
+  data: IClients[];
+  total: number;
+  pages: number;
+  page: number;
+  limit: number;
+};
