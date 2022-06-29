@@ -23,7 +23,7 @@ class ProductDTO extends Model<IProducts, Omit<IProducts, 'id'>> {
   name!: string;
 
   @Column({
-    type: DataTypes.STRING,
+    type: DataTypes.TEXT,
   })
   description!: string;
 
