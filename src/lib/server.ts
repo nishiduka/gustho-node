@@ -36,7 +36,7 @@ class Server {
     this.app.use(cors());
 
     this.app.use(
-      '/api-docs',
+      '/api/docs',
       SwaggerUI.serve,
       SwaggerUI.setup(swaggerDocument)
     );
