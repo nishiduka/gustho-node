@@ -60,7 +60,8 @@ export const findPaginate = async ({
       SELECT 
         product.id, 
         product.name, 
-        product.shortDescription, 
+        product.shortDescription,
+        product.price,
         IFNULL(product.quantity - SUM(citem.quantity), product.quantity) AS avaliable, 
         media.path as imgUrl
 
