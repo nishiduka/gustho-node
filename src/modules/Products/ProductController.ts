@@ -41,7 +41,6 @@ class ProductController extends IController {
     }
   }
 
-  @Auth('all')
   async get() {
     try {
       const params = this._request.params;
