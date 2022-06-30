@@ -17,20 +17,32 @@ import { Op, QueryTypes } from 'sequelize';
 import MediaDTO from 'modules/Media/MediaDTO';
 
 export const findOne = async (id: string): Promise<ProductDTO> => {
-  const product = await ProductDTO.findByPk(parseInt(id), {
-    include: [
-      {
-        model: MediaDTO,
-        as: 'media',
-      },
-    ],
-  });
+  const [product, [{ avaliable }]] = await Promise.all([
+    ProductDTO.findByPk(parseInt(id), {
+      include: [
+        {
+          model: MediaDTO,
+          as: 'media',
+        },
+      ],
+    }) as any,
+    sequelize.query(
+      `
+        SELECT 
+          IFNULL(product.quantity - SUM(citem.quantity), product.quantity) AS avaliable
+        FROM product 
+        LEFT JOIN checkout_items as citem ON product.id = citem.productId
+        WHERE id = ${id}
+      `,
+      { type: QueryTypes.SELECT }
+    ) as any,
+  ]);
 
   if (!product) {
     throw new NotFoundError('Product not found');
   }
 
-  return product;
+  return { ...product.toJSON(), avaliable };
 };
 
 export const findPaginate = async ({
