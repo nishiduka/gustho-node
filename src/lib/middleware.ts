@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import chalk from 'chalk';
+import { LogsDTO } from 'modules/Logs/LogDTO';
 
 const statusByColor = (status: number) => {
   const statusStr = status.toString();
@@ -34,11 +35,20 @@ export function loggerMiddleware(
 
     let color = statusByColor(code);
 
-    const duration = chalk.cyan((Date.now() - start) / 1000);
+    const calc = (Date.now() - start) / 1000;
+    const duration = chalk.cyan(calc);
 
-    console.log(
-      `${method} ${route} ${color} at ${new Date().toISOString()} ip ${ip} ${duration}s`
-    );
+    const date = new Date().toISOString();
+
+    LogsDTO.create({
+      endpoint: request.originalUrl,
+      statusCode: code,
+      createdAt: date,
+      ip: request.headers['x-forwarded-for'] || request.socket.localAddress,
+      timeElapsed: `${calc}s`,
+    });
+
+    console.log(`${method} ${route} ${color} at ${date} ip ${ip} ${duration}s`);
   });
 
   next();

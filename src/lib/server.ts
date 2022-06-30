@@ -7,6 +7,7 @@ import { loggerMiddleware, noRobots } from './middleware';
 import { initSequlize } from './sequelize';
 import * as routes from '../modules/routes';
 import helmet from 'helmet';
+import { connectMongoose } from './mongoose';
 
 class Server {
   app!: express.Express;
@@ -27,6 +28,7 @@ class Server {
 
   private async initModules() {
     await initSequlize();
+    await connectMongoose();
     this.app.use(express.json({ limit: '50MB' }));
     this.app.use(express.urlencoded({ limit: '50MB', extended: true }));
 
