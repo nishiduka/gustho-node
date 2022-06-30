@@ -4,12 +4,17 @@ import CheckoutDTO from './CheckoutDTO';
 import * as checkoutService from './CheckoutService';
 
 export default class CheckoutController extends IController {
+  @Auth('user')
   async getAll() {
-    const checkout = await CheckoutDTO.findAll();
+    const query = this._request.query as any;
+    const currentUser = this._request.currentUser;
 
-    return this.response({
-      checkout,
+    const products = await checkoutService.getAllPaginate({
+      ...query,
+      currentUser,
     });
+
+    return this.response(products);
   }
 
   @Auth('user')

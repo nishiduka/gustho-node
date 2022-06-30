@@ -1,6 +1,11 @@
 import CheckoutDTO from './CheckoutDTO';
 import { createSchema } from './schema';
-import { ICheckoutCreation, ICheckoutItems } from './TCheckout';
+import {
+  ICheckoutCreation,
+  ICheckoutItems,
+  TPaginateCheckoutAll,
+  TTotalQuery,
+} from './TCheckout';
 import { NotFoundError } from '../../utils/NotFoundError';
 import { ValidationError } from '../../utils/ValidationError';
 import { findOneByUser } from '../Clients/ClientsService';
@@ -10,6 +15,8 @@ import { findOne as findProduct } from '../Products/ProductService';
 import { sequelize } from 'lib/sequelize';
 import { QueryTypes } from 'sequelize';
 import { RequestError } from 'utils/RequestError';
+import ProductDTO from 'modules/Products/ProductDTO';
+import ClientsDTO from 'modules/Clients/ClientsDTO';
 
 export const findOne = async (id: string): Promise<CheckoutDTO> => {
   const checkout = await CheckoutDTO.findByPk(parseInt(id));
@@ -137,4 +144,70 @@ export const removeCheckout = async (id: string) => {
   } catch (error) {
     throw error;
   }
+};
+
+export const getAllPaginate = async ({
+  page = '1',
+  limit = '10',
+  search = '',
+  currentUser,
+}: {
+  page: string;
+  limit: string;
+  search: string;
+  currentUser: any;
+}): Promise<TPaginateCheckoutAll> => {
+  const pageNum = parseInt(page);
+  const limitNum = parseInt(limit);
+
+  let where = {};
+  let models = [
+    {
+      model: ProductDTO,
+      as: 'products',
+    },
+  ] as any;
+  let whereRaw = '';
+  if (currentUser.level === 2) {
+    const client = await findOneByUser(currentUser.id);
+
+    where = {
+      clientsId: client.id,
+    };
+
+    whereRaw = `WHERE clientsId = ${client.id}`;
+  } else {
+    models.push({
+      model: ClientsDTO,
+      as: 'client',
+    });
+  }
+
+  const [products, [{ total }]] = await Promise.all([
+    CheckoutDTO.findAll({
+      where,
+      limit: limitNum,
+      offset: limitNum * (pageNum - 1),
+      include: models,
+    }),
+    sequelize.query(
+      `
+      SELECT COUNT(*) as total from (
+        SELECT checkout.id
+        FROM checkout
+        ${whereRaw}
+        group by checkout.id
+      ) as total
+    `,
+      { type: QueryTypes.SELECT }
+    ) as Promise<TTotalQuery[]>,
+  ]);
+
+  return {
+    data: products as any,
+    total,
+    pages: Math.ceil(total / limitNum),
+    page: pageNum,
+    limit: limitNum,
+  };
 };

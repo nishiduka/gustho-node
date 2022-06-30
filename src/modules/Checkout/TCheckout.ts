@@ -17,3 +17,15 @@ export interface ICheckout {
 export interface ICheckoutCreation extends Omit<ICheckout, 'id'> {
   products: ICheckoutItems[];
 }
+
+export type TPaginateCheckoutAll = {
+  data: ICheckout[];
+  total: number;
+  pages: number;
+  page: number;
+  limit: number;
+};
+
+export type TTotalQuery = {
+  total: number;
+};
