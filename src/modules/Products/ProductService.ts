@@ -14,9 +14,17 @@ import { slugify } from 'utils/Slughfy';
 import { saveMedia } from 'modules/Media/MediaService';
 import { sequelize } from 'lib/sequelize';
 import { Op, QueryTypes } from 'sequelize';
+import MediaDTO from 'modules/Media/MediaDTO';
 
 export const findOne = async (id: string): Promise<ProductDTO> => {
-  const product = await ProductDTO.findByPk(parseInt(id));
+  const product = await ProductDTO.findByPk(parseInt(id), {
+    include: [
+      {
+        model: MediaDTO,
+        as: 'media',
+      },
+    ],
+  });
 
   if (!product) {
     throw new NotFoundError('Product not found');

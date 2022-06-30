@@ -10,6 +10,7 @@ import {
 import CheckoutDTO from 'modules/Checkout/CheckoutDTO';
 import CheckoutItemsDTO from 'modules/Checkout/CheckoutItemsDTO';
 import { IProducts } from './TProduct';
+import MediaDTO from 'modules/Media/MediaDTO';
 
 @Table({
   tableName: 'product',
@@ -55,6 +56,9 @@ class ProductDTO extends Model<IProducts, Omit<IProducts, 'id'>> {
 
   @HasMany(() => CheckoutItemsDTO)
   checkoutItems!: CheckoutItemsDTO;
+
+  @HasMany(() => MediaDTO)
+  media!: MediaDTO;
 }
 
 export default ProductDTO;

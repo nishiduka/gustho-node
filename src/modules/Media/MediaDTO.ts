@@ -1,3 +1,4 @@
+import ProductDTO from 'modules/Products/ProductDTO';
 import { DataTypes } from 'sequelize';
 import { Table, Model, Column, ForeignKey } from 'sequelize-typescript';
 import { IMedia } from './TMedia';
@@ -31,7 +32,7 @@ class MediaDTO extends Model<IMedia, Omit<IMedia, 'id'>> {
   })
   order!: string;
 
-  @ForeignKey(() => MediaDTO)
+  @ForeignKey(() => ProductDTO)
   @Column({ onDelete: 'cascade', type: DataTypes.INTEGER })
   productId!: number;
 }
